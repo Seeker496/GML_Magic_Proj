@@ -1,0 +1,24 @@
+---
+title: "GML_Main"
+author: "Devin Frost"
+date: "2024-03-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+```
+
+
+
+
+
+
+
+```{python}
+for i in range(100):
+  print(i)
+```
+
