@@ -8,10 +8,19 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
-
+library(readr)
+library(data.table)
 ```
 
+### Getting the data
 
+I recommend not running this next chuck, as it takes a lot of RAM and CPU
+```{r include=FALSE}
+Raw_LCI_Data <- read_csv("game_data_public.LCI.PremierDraft.csv")
+DowntoDecks <- Raw_LCI_Data |> select(won, matches("deck_"))
+fwrite(DowntoDecks, file = "DowntoDecks", col.names = T, showProgress = T)
+
+```
 
 
 
