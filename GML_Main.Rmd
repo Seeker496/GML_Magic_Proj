@@ -23,14 +23,14 @@ fwrite(DowntoDecks, file = "DowntoDecks", col.names = T, showProgress = T)
 ```
 
 
-# Finding the Overall Winrate
+# Data Exploration
+
+## Checking the overall winrate
 ```{r}
-#DowntoDecks <- read_csv("DowntoDecks.csv")
+DowntoDecks <- read_csv("DowntoDecks.csv")
 DowntoDecks |> count(won)
 
 ```
-
-
 
 
 ```{python}
