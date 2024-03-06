@@ -12,7 +12,7 @@ library(readr)
 library(data.table)
 ```
 
-### Getting the data
+# Getting the data
 
 I recommend not running this next chuck, as it takes a lot of RAM and CPU
 ```{r include=FALSE}
@@ -22,6 +22,13 @@ fwrite(DowntoDecks, file = "DowntoDecks", col.names = T, showProgress = T)
 
 ```
 
+
+# Finding the Overall Winrate
+```{r}
+#DowntoDecks <- read_csv("DowntoDecks.csv")
+DowntoDecks |> count(won)
+
+```
 
 
 
