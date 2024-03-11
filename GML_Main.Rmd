@@ -31,7 +31,19 @@ DowntoDecks <- read_csv("DowntoDecks.csv")
 DowntoDecks |> count(won)
 
 ```
-## looking at the 
+Simplified card comparision
+```{r}
+winrate <- function (c1,c2){
+  temp <- DowntoDecks %>% filter(.[[c1]] > 0 & .[[c2]] > 0) %>% count(won)
+  return(temp[[2,2]]/(temp[[2,2]] + temp[[1,2]]))
+}
+
+#winrate function, card 1, card 2
+#only comparing the first card, Abrade to all OTHER cards 
+#simplified for my poor laptop
+AbradeX <- mapply(winrate, 2, 3:ncol(DowntoDecks), SIMPLIFY = T)
+```
+## looking at the
 ```{r}
 deck_mat <- DowntoDecks[,-1] |> as.matrix() |> as.vector()
 zeros <- deck_mat == 0
