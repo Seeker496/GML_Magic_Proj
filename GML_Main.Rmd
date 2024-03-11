@@ -31,7 +31,6 @@ DowntoDecks <- read_csv("DowntoDecks.csv")
 DowntoDecks |> count(won)
 
 ```
-
 ## looking at the 
 ```{r}
 deck_mat <- DowntoDecks[,-1] |> as.matrix() |> as.vector()
