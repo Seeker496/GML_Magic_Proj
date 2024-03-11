@@ -32,6 +32,17 @@ DowntoDecks |> count(won)
 
 ```
 
+## looking at the 
+```{r}
+deck_mat <- DowntoDecks[,-1] |> as.matrix() |> as.vector()
+zeros <- deck_mat == 0
+deck_mat[zeros] <- NA
+
+deck_mat |> hist()
+
+```
+
+
 
 ```{python}
 for i in range(100):
