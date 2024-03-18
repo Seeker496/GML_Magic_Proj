@@ -25,20 +25,30 @@ fwrite(DowntoDecks, file = "DowntoDecks", col.names = T, showProgress = T)
 
 # Data Exploration
 
-
+## Checking the overall winrate
 ```{r}
 DowntoDecks <- read_csv("DowntoDecks.csv")
-#DowntoDecks |> count(won)
+DowntoDecks |> count(won)
 
 ```
-
-#Simplified card comparision
-  
-This defines a function that compares two given cards and spits out their winrate. Returns 0 if they are never played with each other. The length thing is a bit hacky tbh, but it works.
+Simplified card comparison
 ```{r}
 winrate <- function (c1,c2){
   temp <- DowntoDecks %>% filter(.[[c1]] > 0 & .[[c2]] > 0) %>% count(won)
-  if(length(as.matrix(temp)) != 4) {
+  return(temp[[2,2]]/(temp[[2,2]] + temp[[1,2]]))
+}
+
+#winrate function, card 1, card 2
+#only comparing the first card, Abrade to all OTHER cards 
+#simplified for my poor laptop
+AbradeX <- mapply(winrate, 2, 3:ncol(DowntoDecks), SIMPLIFY = T)
+```
+
+```{r}
+
+winrate <- function (c1,c2){
+  temp <- DowntoDecks %>% filter(.[[c1]] > 0 & .[[c2]] > 0) %>% count(won)
+  if(temp %>% as.matrix() %>% length != 4) {
     return(0)
   }
   return(temp[[2,2]]/(temp[[2,2]] + temp[[1,2]]))
@@ -47,59 +57,15 @@ winrate <- function (c1,c2){
 #winrate function, card 1, card 2
 #only comparing the first card, Abrade to all OTHER cards 
 #simplified for my poor laptop
-AbradeX <- mapply(winrate, 3, 2:ncol(DowntoDecks), SIMPLIFY = T)
+DeckGraph <- sapply(2:ncol(DowntoDecks), \(x) 
+                   mapply(winrate, x, 2:ncol(DowntoDecks), 
+                          SIMPLIFY = T))
 ```
-
-DONT RUN THIS. Builds the adjancency matrix for the down to decks data, then writes it to a csv so we don't need to do it again. took at least more than 30 minutes. 
-```{r}
-RESULT <- data.frame()
-
-for (i in 2:ncol(DowntoDecks)) {
-  RESULT <- rbind(RESULT,
-                  mapply(winrate, i, 2:ncol(DowntoDecks), SIMPLIFY = T))
-}
-
-fwrite(RESULT, file = "DecksGraph.stl", col.names = F, showProgress = T)
-
-```
-
-Making gods most basic adjacency matrix
-```{r}
-BasicAdjMatrix <- matrix(nrow = 291, ncol = 291)
-
-for (i in 1:nrow(RESULT)) {
-  for (j in 1:ncol(RESULT)) {
-    if(RESULT[[i,j]] > 0) {
-      BasicAdjMatrix[i,j] <- 1
-    } else {
-      BasicAdjMatrix[i,j] <- 0
-    }
-  }
-}
-
-```
-
-
-
-```{r}
-library(igraph)
-
-graphgraph <- graph_from_adjacency_matrix(as.matrix(BasicAdjMatrix,"adjacency"))
-plot.igraph(graphgraph,layout = layout_with_lgl(graphgraph), 
-            edge.arrow.size=0.5, vertex.size = 10, vertex.label.cex = 0.1)
-
-```
-
-
-
-
-
-
 
 ## looking at the
 ```{r}
 deck_mat <- DowntoDecks[,-1] |> as.matrix() |> as.vector()
-zeros <- deck_mat == 0 
+zeros <- deck_mat == 0
 deck_mat[zeros] <- NA
 
 deck_mat |> hist()
