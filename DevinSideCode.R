@@ -25,5 +25,6 @@ LinkGraph <- sapply(2:ncol(DowntoDecks), \(x)
 WR55Graph <- graph_from_adjacency_matrix(as.matrix(LinkGraph, "adjacency"),
                                          mode = "undirected")
 
-plot(WR55Graph, layout = layout_with_fr,
-     vertex.label = NA, vertex.size = 4, edge.arrow.width = 0.5)
+plot(WR55Graph, layout = layout_with_drl,
+     vertex.label = NA, vertex.size = 4)
+
