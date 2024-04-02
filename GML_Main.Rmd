@@ -44,6 +44,7 @@ winrate <- function (c1,c2){
 AbradeX <- mapply(winrate, 2, 3:ncol(DowntoDecks), SIMPLIFY = T)
 ```
 
+This does the comparison for the whole set, and saves it to an adjacency matrix where the edges are weighted by the pairwise winrate.
 ```{r}
 
 winrate <- function (c1,c2){
@@ -55,11 +56,10 @@ winrate <- function (c1,c2){
 }
 
 #winrate function, card 1, card 2
-#only comparing the first card, Abrade to all OTHER cards 
 #simplified for my poor laptop
+
 DeckGraph <- sapply(2:ncol(DowntoDecks), \(x) 
                    mapply(winrate, x, 2:ncol(DowntoDecks), 
                           SIMPLIFY = T))
 ```
-
 
